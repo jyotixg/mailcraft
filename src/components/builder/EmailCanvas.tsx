@@ -14,7 +14,14 @@ export function EmailCanvas() {
 
   return (
     <Box
-      sx={{ height: '100%', overflowY: 'auto', bgcolor: 'background.default', p: { xs: 2, md: 4 } }}
+      sx={{
+        height: '100%',
+        overflowY: 'auto',
+        backgroundColor: '#eef0f7',
+        backgroundImage: 'radial-gradient(circle, #dcdfec 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+        p: { xs: 2, md: 4 },
+      }}
       onClick={() => dispatch({ type: 'SELECT_BLOCK', id: null })}
     >
       <Box sx={{ maxWidth: 640, mx: 'auto' }}>
@@ -37,14 +44,15 @@ export function EmailCanvas() {
 
         <Paper
           ref={setNodeRef}
-          variant="outlined"
           onClick={(e) => e.stopPropagation()}
           sx={{
             minHeight: 400,
-            outline: isOver ? '2px solid' : 'none',
-            outlineColor: 'primary.main',
+            borderRadius: '14px',
+            boxShadow: isOver ? '0 12px 28px -8px rgba(79, 70, 229, 0.35)' : '0 8px 24px -10px rgba(16, 24, 40, 0.16)',
+            outline: isOver ? '2px solid' : '1px solid transparent',
+            outlineColor: isOver ? 'primary.main' : 'transparent',
             outlineOffset: 2,
-            overflow: 'hidden',
+            transition: 'box-shadow 0.16s ease, outline-color 0.16s ease',
           }}
         >
           {blocks.length === 0 ? (

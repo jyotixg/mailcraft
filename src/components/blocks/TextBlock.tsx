@@ -1,6 +1,8 @@
 import { replaceVariables } from '../../engine/variableEngine';
 import type { TextBlockProps } from '../../types/blocks';
 import type { PreviewDataValues } from '../../types/email';
+import { normalizeSpacing, spacingToCss } from '../../utils/spacing';
+import { RichText } from './RichText';
 
 export interface BlockComponentProps<P> {
   props: P;
@@ -17,12 +19,15 @@ export function TextBlock({ props, previewValues }: BlockComponentProps<TextBloc
         color: props.color,
         textAlign: props.align,
         lineHeight: props.lineHeight,
-        padding: props.padding,
+        padding: spacingToCss(normalizeSpacing(props.padding)),
+        margin: spacingToCss(normalizeSpacing(props.margin)),
+        textTransform: props.textTransform === 'none' ? undefined : props.textTransform,
         whiteSpace: 'pre-wrap',
         fontFamily: 'Arial, Helvetica, sans-serif',
+        backgroundColor: props.bgColor,
       }}
     >
-      {content || <span style={{ opacity: 0.4 }}>Empty text block</span>}
+      {content ? <RichText text={content} /> : <span style={{ opacity: 0.4 }}>Empty text block</span>}
     </div>
   );
 }

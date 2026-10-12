@@ -1,5 +1,6 @@
 import { replaceVariables } from '../../engine/variableEngine';
 import type { HeaderBlockProps } from '../../types/blocks';
+import { normalizeSpacing, spacingToCss } from '../../utils/spacing';
 import type { BlockComponentProps } from './TextBlock';
 
 export function HeaderBlock({ props, previewValues }: BlockComponentProps<HeaderBlockProps>) {
@@ -8,7 +9,7 @@ export function HeaderBlock({ props, previewValues }: BlockComponentProps<Header
     <div
       style={{
         backgroundColor: props.bgColor,
-        padding: props.padding,
+        padding: spacingToCss(normalizeSpacing(props.padding)),
         textAlign: props.align,
         fontFamily: 'Arial, Helvetica, sans-serif',
       }}
@@ -16,7 +17,7 @@ export function HeaderBlock({ props, previewValues }: BlockComponentProps<Header
       {props.logoUrl ? (
         <img src={props.logoUrl} alt={companyName || 'Company logo'} style={{ width: props.logoWidth }} />
       ) : (
-        <div style={{ fontSize: 18, fontWeight: 'bold', color: '#1a1a1a', letterSpacing: 0.5 }}>
+        <div style={{ fontSize: 18, fontWeight: 'bold', color: props.textColor, letterSpacing: 0.5 }}>
           {companyName || 'COMPANY LOGO'}
         </div>
       )}

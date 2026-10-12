@@ -3,6 +3,7 @@ import DesktopWindowsIcon from '@mui/icons-material/DesktopWindows';
 import EditIcon from '@mui/icons-material/Edit';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import GridViewIcon from '@mui/icons-material/GridView';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import SaveIcon from '@mui/icons-material/Save';
@@ -59,14 +60,32 @@ export function BuilderHeader({
   return (
     <AppBar position="static" elevation={0}>
       <Toolbar sx={{ gap: 1, flexWrap: 'wrap', py: 1 }}>
-        <Box sx={{ mr: 2 }}>
-          <Typography variant="h6" component="div" sx={{ lineHeight: 1.1 }}>
-            MailCraft
-          </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', md: 'block' } }}>
-            Transactional Email Template Builder
-          </Typography>
-        </Box>
+        <Stack direction="row" spacing={1.25} sx={{ mr: 2.5, alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: 34,
+              height: 34,
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              color: '#fff',
+              backgroundImage: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 55%, #4338ca 100%)',
+              boxShadow: '0 4px 12px -2px rgba(79, 70, 229, 0.45)',
+            }}
+          >
+            <ForwardToInboxIcon sx={{ fontSize: 19 }} />
+          </Box>
+          <Box>
+            <Typography variant="h6" component="div" sx={{ lineHeight: 1.1 }}>
+              MailCraft
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', md: 'block' } }}>
+              Transactional Email Template Builder
+            </Typography>
+          </Box>
+        </Stack>
 
         <Stack direction="row" spacing={0.5}>
           <Tooltip title="Undo (Ctrl/Cmd+Z)">

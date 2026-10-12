@@ -1,4 +1,5 @@
 import type { ContainerBlockProps } from '../../types/blocks';
+import { normalizeSpacing, spacingToCss } from '../../utils/spacing';
 import type { BlockComponentProps } from './TextBlock';
 
 export function ContainerBlock({ props }: BlockComponentProps<ContainerBlockProps>) {
@@ -9,7 +10,7 @@ export function ContainerBlock({ props }: BlockComponentProps<ContainerBlockProp
           backgroundColor: props.bgColor,
           border: props.border,
           borderRadius: props.borderRadius,
-          padding: props.padding,
+          padding: spacingToCss(normalizeSpacing(props.padding)),
           textAlign: props.align,
           minHeight: 48,
           fontFamily: 'Arial, Helvetica, sans-serif',

@@ -11,19 +11,20 @@ export function FooterBlock({ props, previewValues }: BlockComponentProps<Footer
         textAlign: props.align,
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: 12,
-        color: '#868e96',
+        color: props.textColor,
         borderTop: '1px solid #e9ecef',
+        backgroundColor: props.bgColor,
       }}
     >
       <div style={{ marginBottom: 4 }}>{resolve(props.companyName)}</div>
       <div style={{ marginBottom: 8 }}>
-        Need help? <a href={`mailto:${props.supportEmail}`}>{resolve(props.supportEmail)}</a>
+        Need help? <a href={`mailto:${props.supportEmail}`} style={{ color: props.textColor }}>{resolve(props.supportEmail)}</a>
       </div>
       <div style={{ marginBottom: 8 }}>
-        <a href={props.privacyUrl} style={{ color: '#868e96', marginRight: 12 }}>
+        <a href={props.privacyUrl} style={{ color: props.textColor, marginRight: 12 }}>
           Privacy Policy
         </a>
-        <a href={props.termsUrl} style={{ color: '#868e96' }}>
+        <a href={props.termsUrl} style={{ color: props.textColor }}>
           Terms of Service
         </a>
       </div>

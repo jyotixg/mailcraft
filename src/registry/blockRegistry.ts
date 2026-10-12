@@ -1,3 +1,4 @@
+import CollectionsIcon from '@mui/icons-material/Collections';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import GppMaybeIcon from '@mui/icons-material/GppMaybe';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
@@ -5,6 +6,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import PasswordIcon from '@mui/icons-material/Password';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ShareIcon from '@mui/icons-material/Share';
 import SmartButtonIcon from '@mui/icons-material/SmartButton';
 import SpaceBarIcon from '@mui/icons-material/SpaceBar';
 import TitleIcon from '@mui/icons-material/Title';
@@ -20,9 +22,11 @@ import { FooterBlock } from '../components/blocks/FooterBlock';
 import { HeaderBlock } from '../components/blocks/HeaderBlock';
 import { HeadingBlock } from '../components/blocks/HeadingBlock';
 import { ImageBlock } from '../components/blocks/ImageBlock';
+import { ImageGroupBlock } from '../components/blocks/ImageGroupBlock';
 import { LinkBlock } from '../components/blocks/LinkBlock';
 import { OTPBlock } from '../components/blocks/OTPBlock';
 import { SecurityAlertBlock } from '../components/blocks/SecurityAlertBlock';
+import { SocialIconsBlock } from '../components/blocks/SocialIconsBlock';
 import { SpacerBlock } from '../components/blocks/SpacerBlock';
 import type { BlockComponentProps } from '../components/blocks/TextBlock';
 import { TextBlock } from '../components/blocks/TextBlock';
@@ -31,10 +35,13 @@ import {
   ALIGN_OPTIONS,
   BLOCK_WIDTH_OPTIONS,
   DIVIDER_STYLE_OPTIONS,
+  EMOJI_ICON_OPTIONS,
   FONT_WEIGHT_OPTIONS,
+  TEXT_TRANSFORM_OPTIONS,
   type PropertyFieldConfig,
 } from './propertyRegistry';
 import type { BlockGroup, BlockPropsMap, EmailBlockType } from '../types/blocks';
+import { uniformSpacing } from '../utils/spacing';
 
 export interface BlockRegistryEntry<K extends EmailBlockType> {
   type: K;
@@ -62,20 +69,25 @@ export const blockRegistry: BlockRegistry = {
       content: 'Hello {{userName}},',
       fontSize: 15,
       fontWeight: 'normal',
+      textTransform: 'none',
       color: '#333333',
       align: 'left',
       lineHeight: 1.5,
-      padding: 16,
-      margin: 0,
+      padding: uniformSpacing(16),
+      margin: uniformSpacing(0),
+      bgColor: '#ffffff',
     },
     fields: [
-      { key: 'content', label: 'Content', type: 'textarea', supportsVariables: true },
+      { key: 'content', label: 'Content', type: 'textarea', supportsVariables: true, supportsRichColor: true },
       { key: 'fontSize', label: 'Font Size', type: 'number', min: 10, max: 48 },
       { key: 'fontWeight', label: 'Font Weight', type: 'select', options: FONT_WEIGHT_OPTIONS },
+      { key: 'textTransform', label: 'Font Style', type: 'select', options: TEXT_TRANSFORM_OPTIONS },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
       { key: 'color', label: 'Text Color', type: 'color' },
       { key: 'lineHeight', label: 'Line Height', type: 'number', min: 1, max: 3, step: 0.1 },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
+      { key: 'margin', label: 'Margin', type: 'spacing' },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
     ],
     component: TextBlock,
   },
@@ -89,18 +101,25 @@ export const blockRegistry: BlockRegistry = {
       text: 'Section Heading',
       fontSize: 22,
       fontWeight: 'bold',
+      textTransform: 'none',
       color: '#1a1a1a',
       align: 'left',
-      padding: 16,
-      margin: 0,
+      padding: uniformSpacing(16),
+      margin: uniformSpacing(0),
+      bgColor: '#ffffff',
+      icon: '',
     },
     fields: [
-      { key: 'text', label: 'Text', type: 'text', supportsVariables: true },
+      { key: 'icon', label: 'Icon', type: 'select', options: EMOJI_ICON_OPTIONS },
+      { key: 'text', label: 'Text', type: 'text', supportsVariables: true, supportsRichColor: true },
       { key: 'fontSize', label: 'Font Size', type: 'number', min: 12, max: 64 },
       { key: 'fontWeight', label: 'Font Weight', type: 'select', options: FONT_WEIGHT_OPTIONS },
+      { key: 'textTransform', label: 'Font Style', type: 'select', options: TEXT_TRANSFORM_OPTIONS },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
       { key: 'color', label: 'Text Color', type: 'color' },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
+      { key: 'margin', label: 'Margin', type: 'spacing' },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
     ],
     component: HeadingBlock,
     validate: (props) => (props.text.trim() ? [] : ['Heading text is empty']),
@@ -117,15 +136,17 @@ export const blockRegistry: BlockRegistry = {
       width: 280,
       align: 'center',
       linkUrl: '',
-      padding: 16,
+      padding: uniformSpacing(16),
+      bgColor: '#ffffff',
     },
     fields: [
-      { key: 'src', label: 'Image URL', type: 'url' },
+      { key: 'src', label: 'Image', type: 'image' },
       { key: 'alt', label: 'Alt Text', type: 'text', supportsVariables: true },
       { key: 'width', label: 'Width (px)', type: 'number', min: 32, max: 600 },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
       { key: 'linkUrl', label: 'Link URL', type: 'url', supportsVariables: true },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
     ],
     component: ImageBlock,
     validate: (props) => {
@@ -144,12 +165,12 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: {
       text: 'Verify Account',
       url: '{{verificationUrl}}',
-      bgColor: '#2f6feb',
+      bgColor: '#4f46e5',
       textColor: '#ffffff',
-      borderRadius: 6,
+      borderRadius: 8,
       align: 'center',
       width: 'auto',
-      padding: 16,
+      padding: uniformSpacing(16),
     },
     fields: [
       { key: 'text', label: 'Button Text', type: 'text', supportsVariables: true },
@@ -159,7 +180,7 @@ export const blockRegistry: BlockRegistry = {
       { key: 'bgColor', label: 'Background Color', type: 'color' },
       { key: 'textColor', label: 'Text Color', type: 'color' },
       { key: 'borderRadius', label: 'Radius', type: 'number', min: 0, max: 32 },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
     ],
     component: ButtonBlock,
     validate: (props) => {
@@ -180,12 +201,14 @@ export const blockRegistry: BlockRegistry = {
       url: '{{verificationUrl}}',
       color: '#2f6feb',
       align: 'left',
+      bgColor: '#ffffff',
     },
     fields: [
       { key: 'text', label: 'Link Text', type: 'text', supportsVariables: true },
       { key: 'url', label: 'URL', type: 'url', supportsVariables: true },
       { key: 'color', label: 'Color', type: 'color' },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
     ],
     component: LinkBlock,
     validate: (props) => (props.url.trim() ? [] : ['Link URL is required']),
@@ -196,12 +219,25 @@ export const blockRegistry: BlockRegistry = {
     description: 'Horizontal rule',
     icon: HorizontalRuleIcon,
     group: 'layout',
-    defaultProps: { color: '#e9ecef', thickness: 1, style: 'solid', margin: 16 },
+    defaultProps: {
+      color: '#e9ecef',
+      thickness: 1,
+      style: 'solid',
+      margin: 16,
+      badgeIcon: '',
+      badgeText: '',
+      badgeColor: '#1971c2',
+      badgePosition: 'right',
+    },
     fields: [
       { key: 'color', label: 'Color', type: 'color' },
       { key: 'thickness', label: 'Thickness', type: 'number', min: 1, max: 8 },
       { key: 'style', label: 'Style', type: 'select', options: DIVIDER_STYLE_OPTIONS },
       { key: 'margin', label: 'Margin', type: 'number', min: 0, max: 64 },
+      { key: 'badgeIcon', label: 'Badge Icon', type: 'select', options: EMOJI_ICON_OPTIONS },
+      { key: 'badgeText', label: 'Badge Text', type: 'text', helperText: 'Optional label, e.g. "Step 2" or "OR" — shown alongside/instead of the icon' },
+      { key: 'badgeColor', label: 'Badge Color', type: 'color' },
+      { key: 'badgePosition', label: 'Badge Position', type: 'select', options: ALIGN_OPTIONS },
     ],
     component: DividerBlock,
   },
@@ -225,14 +261,14 @@ export const blockRegistry: BlockRegistry = {
       bgColor: '#f8f9fa',
       border: '1px solid #e9ecef',
       borderRadius: 8,
-      padding: 16,
+      padding: uniformSpacing(0),
       align: 'left',
     },
     fields: [
       { key: 'bgColor', label: 'Background Color', type: 'color' },
       { key: 'border', label: 'Border', type: 'text' },
       { key: 'borderRadius', label: 'Border Radius', type: 'number', min: 0, max: 32 },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
     ],
     component: ContainerBlock,
@@ -247,16 +283,18 @@ export const blockRegistry: BlockRegistry = {
       logoUrl: '',
       companyName: '{{companyName}}',
       bgColor: '#ffffff',
+      textColor: '#1a1a1a',
       align: 'center',
-      padding: 24,
+      padding: uniformSpacing(24),
       logoWidth: 140,
     },
     fields: [
-      { key: 'logoUrl', label: 'Logo URL', type: 'url' },
+      { key: 'logoUrl', label: 'Logo', type: 'image' },
       { key: 'companyName', label: 'Company Name', type: 'text', supportsVariables: true },
       { key: 'bgColor', label: 'Background Color', type: 'color' },
+      { key: 'textColor', label: 'Text Color', type: 'color' },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
       { key: 'logoWidth', label: 'Logo Width', type: 'number', min: 40, max: 400 },
     ],
     component: HeaderBlock,
@@ -274,6 +312,8 @@ export const blockRegistry: BlockRegistry = {
       termsUrl: 'https://example.com/terms',
       copyrightText: `© ${new Date().getFullYear()} {{companyName}}. All rights reserved.`,
       align: 'center',
+      bgColor: '#ffffff',
+      textColor: '#868e96',
     },
     fields: [
       { key: 'companyName', label: 'Company Name', type: 'text', supportsVariables: true },
@@ -282,6 +322,8 @@ export const blockRegistry: BlockRegistry = {
       { key: 'termsUrl', label: 'Terms URL', type: 'url' },
       { key: 'copyrightText', label: 'Copyright Text', type: 'text', supportsVariables: true },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
+      { key: 'textColor', label: 'Text Color', type: 'color' },
     ],
     component: FooterBlock,
     validate: (props) => (props.supportEmail.trim() ? [] : ['Footer is missing a support email']),
@@ -326,8 +368,9 @@ export const blockRegistry: BlockRegistry = {
       dateVariable: 'transactionDate',
       statusVariable: 'status',
       bgColor: '#f8f9fa',
+      textColor: '#1a1a1a',
       border: '1px solid #e9ecef',
-      padding: 20,
+      padding: uniformSpacing(20),
     },
     fields: [
       { key: 'title', label: 'Title', type: 'text', supportsVariables: true },
@@ -341,8 +384,9 @@ export const blockRegistry: BlockRegistry = {
       { key: 'dateVariable', label: 'Date Variable', type: 'text', helperText: 'Variable name, without braces' },
       { key: 'statusVariable', label: 'Status Variable', type: 'text', helperText: 'Variable name, without braces' },
       { key: 'bgColor', label: 'Background', type: 'color' },
+      { key: 'textColor', label: 'Text Color', type: 'color' },
       { key: 'border', label: 'Border', type: 'text' },
-      { key: 'padding', label: 'Padding', type: 'number', min: 0, max: 64 },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
     ],
     component: TransactionBlock,
     validate: (props) => (props.amountVariable.trim() ? [] : ['Amount variable is required']),
@@ -361,14 +405,68 @@ export const blockRegistry: BlockRegistry = {
       align: 'left',
     },
     fields: [
-      { key: 'title', label: 'Title', type: 'text', supportsVariables: true },
-      { key: 'message', label: 'Message', type: 'textarea', supportsVariables: true },
+      { key: 'title', label: 'Title', type: 'text', supportsVariables: true, supportsRichColor: true },
+      { key: 'message', label: 'Message', type: 'textarea', supportsVariables: true, supportsRichColor: true },
       { key: 'bgColor', label: 'Background', type: 'color' },
       { key: 'textColor', label: 'Text Color', type: 'color' },
       { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
     ],
     component: SecurityAlertBlock,
     validate: (props) => (props.message.trim() ? [] : ['Security alert message is empty']),
+  },
+  socialIcons: {
+    type: 'socialIcons',
+    label: 'Social Icons',
+    description: 'Row of social media links',
+    icon: ShareIcon,
+    group: 'common',
+    defaultProps: {
+      facebookUrl: '',
+      twitterUrl: '',
+      linkedinUrl: '',
+      instagramUrl: '',
+      youtubeUrl: '',
+      iconSize: 36,
+      align: 'center',
+      padding: uniformSpacing(16),
+      bgColor: '#ffffff',
+    },
+    fields: [
+      { key: 'facebookUrl', label: 'Facebook URL', type: 'url' },
+      { key: 'twitterUrl', label: 'X (Twitter) URL', type: 'url' },
+      { key: 'linkedinUrl', label: 'LinkedIn URL', type: 'url' },
+      { key: 'instagramUrl', label: 'Instagram URL', type: 'url' },
+      { key: 'youtubeUrl', label: 'YouTube URL', type: 'url' },
+      { key: 'iconSize', label: 'Icon Size', type: 'number', min: 24, max: 56 },
+      { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
+    ],
+    component: SocialIconsBlock,
+  },
+  imageGroup: {
+    type: 'imageGroup',
+    label: 'Image Group',
+    description: 'Multiple logos or badges in a row',
+    icon: CollectionsIcon,
+    group: 'content',
+    defaultProps: {
+      images: [],
+      imageHeight: 32,
+      gap: 20,
+      align: 'center',
+      padding: uniformSpacing(16),
+      bgColor: '#ffffff',
+    },
+    fields: [
+      { key: 'images', label: 'Images', type: 'imageList' },
+      { key: 'imageHeight', label: 'Image Height', type: 'number', min: 16, max: 120 },
+      { key: 'gap', label: 'Gap', type: 'number', min: 0, max: 48 },
+      { key: 'align', label: 'Alignment', type: 'select', options: ALIGN_OPTIONS },
+      { key: 'padding', label: 'Padding', type: 'spacing' },
+      { key: 'bgColor', label: 'Background Color', type: 'color' },
+    ],
+    component: ImageGroupBlock,
   },
 };
 

@@ -1,4 +1,5 @@
 import type { EmailTemplateSchema } from '../types/email';
+import { uniformSpacing } from '../utils/spacing';
 import { block, variable } from './helpers';
 
 export function createSubscriptionTemplate(): EmailTemplateSchema {
@@ -28,7 +29,7 @@ export function createSubscriptionTemplate(): EmailTemplateSchema {
       block('heading', { text: 'Subscription Summary', fontSize: 16 }),
       block('text', {
         content: 'Plan: {{planName}}\nAmount: {{amount}}\nNext Billing Date: {{nextBillingDate}}',
-        padding: 8,
+        padding: uniformSpacing(8),
       }),
       block('button', { text: 'View Subscription', url: '{{subscriptionUrl}}' }),
       block('footer', {}),

@@ -75,7 +75,17 @@ export function SortableBlock({ block, index, total }: { block: EmailBlock; inde
       >
         <DragIndicatorIcon fontSize="small" />
       </Box>
-      {renderBlock(block)}
+      <Box
+        sx={{
+          overflow: 'hidden',
+          borderTopLeftRadius: index === 0 ? 14 : 0,
+          borderTopRightRadius: index === 0 ? 14 : 0,
+          borderBottomLeftRadius: index === total - 1 ? 14 : 0,
+          borderBottomRightRadius: index === total - 1 ? 14 : 0,
+        }}
+      >
+        {renderBlock(block)}
+      </Box>
     </Box>
   );
 }

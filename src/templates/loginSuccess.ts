@@ -1,4 +1,5 @@
 import type { EmailTemplateSchema } from '../types/email';
+import { uniformSpacing } from '../utils/spacing';
 import { block, variable } from './helpers';
 
 export function createLoginSuccessTemplate(): EmailTemplateSchema {
@@ -28,7 +29,7 @@ export function createLoginSuccessTemplate(): EmailTemplateSchema {
       block('heading', { text: 'Login Details', fontSize: 16 }),
       block('text', {
         content: 'Device: {{device}}\nLocation: {{location}}\nTime: {{loginTime}}',
-        padding: 8,
+        padding: uniformSpacing(8),
       }),
       block('securityAlert', {
         title: 'Security Alert',

@@ -1,5 +1,6 @@
 import { replaceVariables } from '../../engine/variableEngine';
 import type { ButtonBlockProps } from '../../types/blocks';
+import { normalizeSpacing, spacingToCss } from '../../utils/spacing';
 import type { BlockComponentProps } from './TextBlock';
 
 const justifyForAlign: Record<ButtonBlockProps['align'], string> = {
@@ -11,7 +12,13 @@ const justifyForAlign: Record<ButtonBlockProps['align'], string> = {
 export function ButtonBlock({ props, previewValues }: BlockComponentProps<ButtonBlockProps>) {
   const text = previewValues ? replaceVariables(props.text, previewValues) : props.text;
   return (
-    <div style={{ display: 'flex', justifyContent: justifyForAlign[props.align], padding: props.padding }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: justifyForAlign[props.align],
+        padding: spacingToCss(normalizeSpacing(props.padding)),
+      }}
+    >
       <span
         style={{
           display: 'inline-block',
@@ -25,6 +32,7 @@ export function ButtonBlock({ props, previewValues }: BlockComponentProps<Button
           fontSize: 15,
           fontWeight: 'bold',
           boxSizing: 'border-box',
+          boxShadow: `0 4px 12px -3px ${props.bgColor}80`,
         }}
       >
         {text || 'Button'}

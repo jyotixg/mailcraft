@@ -1,5 +1,6 @@
 import { blockRegistry } from '../registry/blockRegistry';
 import type { EmailTemplateSchema } from '../types/email';
+import { isDataUrlImage } from '../utils/image';
 import { validateVariables } from './variableEngine';
 
 export type ValidationSeverity = 'error' | 'warning';
@@ -71,6 +72,24 @@ export function validateTemplate(schema: EmailTemplateSchema): ValidationResult 
   let hasFooter = false;
   for (const block of schema.blocks) {
     if (block.type === 'footer') hasFooter = true;
+
+    if (block.type === 'image' && isDataUrlImage(block.props.src)) {
+      issues.push({
+        id: `${block.id}-embedded-image`,
+        severity: 'warning',
+        message: 'Image uses an uploaded (embedded) file — some email clients like Gmail may not render it. Host it on a URL for production sending.',
+        blockId: block.id,
+      });
+    }
+    if (block.type === 'header' && isDataUrlImage(block.props.logoUrl)) {
+      issues.push({
+        id: `${block.id}-embedded-logo`,
+        severity: 'warning',
+        message: 'Logo uses an uploaded (embedded) file — some email clients like Gmail may not render it. Host it on a URL for production sending.',
+        blockId: block.id,
+      });
+    }
+
     const entry = blockRegistry[block.type];
     const validate = entry.validate as ((props: typeof block.props) => string[]) | undefined;
     if (validate) {

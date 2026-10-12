@@ -1,5 +1,6 @@
 import { replaceVariables } from '../../engine/variableEngine';
 import type { ImageBlockProps } from '../../types/blocks';
+import { normalizeSpacing, spacingToCss } from '../../utils/spacing';
 import type { BlockComponentProps } from './TextBlock';
 
 const justifyForAlign: Record<ImageBlockProps['align'], string> = {
@@ -11,7 +12,14 @@ const justifyForAlign: Record<ImageBlockProps['align'], string> = {
 export function ImageBlock({ props, previewValues }: BlockComponentProps<ImageBlockProps>) {
   const alt = previewValues ? replaceVariables(props.alt, previewValues) : props.alt;
   return (
-    <div style={{ display: 'flex', justifyContent: justifyForAlign[props.align], padding: props.padding }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: justifyForAlign[props.align],
+        padding: spacingToCss(normalizeSpacing(props.padding)),
+        backgroundColor: props.bgColor,
+      }}
+    >
       {props.src ? (
         <img src={props.src} alt={alt} style={{ width: props.width, maxWidth: '100%', display: 'block' }} />
       ) : (

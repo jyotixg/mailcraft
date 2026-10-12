@@ -3,7 +3,7 @@ import { Box, InputAdornment, Stack, TextField, Typography } from '@mui/material
 import { useMemo, useState } from 'react';
 import { blockRegistryList } from '../../registry/blockRegistry';
 import type { BlockGroup } from '../../types/blocks';
-import { BlockLibraryItem } from './BlockLibraryItem';
+import { BlockLibraryItem, GROUP_ACCENT } from './BlockLibraryItem';
 
 const GROUP_LABELS: Record<BlockGroup, string> = {
   content: 'Content',
@@ -61,12 +61,20 @@ export function BlockLibrary() {
         <Stack spacing={2.5}>
           {groups.map(({ group, entries }) => (
             <Box key={group}>
-              <Typography
-                variant="caption"
-                sx={{ fontWeight: 700, letterSpacing: 0.6, color: 'text.secondary', display: 'block', mb: 1 }}
-              >
-                {GROUP_LABELS[group].toUpperCase()}
-              </Typography>
+              <Stack direction="row" spacing={0.75} sx={{ mb: 1, alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    backgroundImage: GROUP_ACCENT[group],
+                    flexShrink: 0,
+                  }}
+                />
+                <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: 0.6, color: 'text.secondary' }}>
+                  {GROUP_LABELS[group].toUpperCase()}
+                </Typography>
+              </Stack>
               <Stack spacing={1}>
                 {entries.map((entry) => (
                   <BlockLibraryItem key={entry.type} entry={entry} />

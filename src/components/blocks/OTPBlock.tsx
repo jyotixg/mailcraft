@@ -16,46 +16,57 @@ export function OTPBlock({ props, previewValues }: BlockComponentProps<OtpBlockP
     <div
       style={{
         textAlign: props.align,
-        padding: 24,
+        padding: 28,
         backgroundColor: props.bgColor,
         fontFamily: 'Arial, Helvetica, sans-serif',
       }}
     >
-      <div style={{ fontSize: 13, color: props.textColor, opacity: 0.75, marginBottom: 12 }}>{label}</div>
-      <div
-        style={{
-          display: 'inline-flex',
-          gap: 8,
-          padding: '14px 20px',
-          border: '1px solid #dee2e6',
-          borderRadius: 8,
-          backgroundColor: '#ffffff',
-        }}
-      >
-        {digits
-          ? digits.map((digit, index) => (
-              <span
-                key={`${digit}-${index}`}
-                style={{
-                  fontSize: 22,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                  color: props.textColor,
-                  minWidth: 18,
-                  display: 'inline-block',
-                  textAlign: 'center',
-                }}
-              >
-                {digit}
-              </span>
-            ))
-          : (
-              <span style={{ fontSize: 18, fontWeight: 'bold', fontFamily: 'monospace', color: props.textColor }}>
-                {otpToken}
-              </span>
-            )}
+      <div style={{ fontSize: 13, fontWeight: 600, color: props.textColor, opacity: 0.7, marginBottom: 14 }}>
+        {label}
       </div>
-      <div style={{ fontSize: 12, color: props.textColor, opacity: 0.6, marginTop: 12 }}>
+      {digits ? (
+        <div style={{ display: 'inline-flex', gap: 8 }}>
+          {digits.map((digit, index) => (
+            <span
+              key={`${digit}-${index}`}
+              style={{
+                fontSize: 22,
+                fontWeight: 800,
+                color: props.textColor,
+                width: 40,
+                height: 48,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+                backgroundColor: '#ffffff',
+                border: '1px solid #e2e4ee',
+                boxShadow: '0 2px 6px -2px rgba(16, 24, 40, 0.16)',
+              }}
+            >
+              {digit}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <span
+          style={{
+            display: 'inline-block',
+            fontSize: 18,
+            fontWeight: 700,
+            fontFamily: 'monospace',
+            color: props.textColor,
+            padding: '14px 24px',
+            borderRadius: 10,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e2e4ee',
+            boxShadow: '0 2px 6px -2px rgba(16, 24, 40, 0.16)',
+          }}
+        >
+          {otpToken}
+        </span>
+      )}
+      <div style={{ fontSize: 12, color: props.textColor, opacity: 0.6, marginTop: 14 }}>
         This code expires in {expiryValue} minutes.
       </div>
     </div>

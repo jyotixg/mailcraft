@@ -10,13 +10,20 @@ import {
 } from '@mui/material';
 import { useRef, type ChangeEvent } from 'react';
 import type { PropertyFieldConfig } from '../../registry/propertyRegistry';
+import type { ImageGroupItem } from '../../types/blocks';
 import type { TemplateVariable } from '../../types/variables';
+import type { Spacing } from '../../utils/spacing';
 import { VariablePicker } from '../variables/VariablePicker';
+import { ImageListPropertyField } from './ImageListPropertyField';
+import { ImagePropertyField } from './ImagePropertyField';
+import { NumberInput } from './NumberInput';
+import { RichTextEditor } from './RichTextEditor';
+import { SpacingPropertyField } from './SpacingPropertyField';
 
 interface PropertyFieldProps {
   config: PropertyFieldConfig;
   value: unknown;
-  onChange: (value: string | number | boolean) => void;
+  onChange: (value: string | number | boolean | ImageGroupItem[] | Spacing) => void;
   variables: TemplateVariable[];
 }
 
@@ -41,6 +48,37 @@ export function PropertyField({ config, value, onChange, variables }: PropertyFi
       onChange(current + token);
     }
   };
+
+  if (config.type === 'image') {
+    return <ImagePropertyField label={config.label} value={String(value ?? '')} onChange={onChange} />;
+  }
+
+  if (config.type === 'imageList') {
+    return (
+      <ImageListPropertyField
+        label={config.label}
+        value={Array.isArray(value) ? (value as ImageGroupItem[]) : []}
+        onChange={onChange}
+      />
+    );
+  }
+
+  if (config.type === 'spacing') {
+    return <SpacingPropertyField label={config.label} value={value} onChange={onChange} />;
+  }
+
+  if (config.supportsRichColor) {
+    return (
+      <RichTextEditor
+        label={config.label}
+        value={String(value ?? '')}
+        onChange={onChange}
+        multiline={config.type === 'textarea'}
+        variables={variables}
+        helperText={config.helperText}
+      />
+    );
+  }
 
   if (config.type === 'boolean') {
     return (
@@ -76,14 +114,13 @@ export function PropertyField({ config, value, onChange, variables }: PropertyFi
 
   if (config.type === 'number') {
     return (
-      <TextField
+      <NumberInput
         label={config.label}
-        type="number"
-        size="small"
-        fullWidth
-        value={value as number}
-        onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
-        slotProps={{ htmlInput: { min: config.min, max: config.max, step: config.step ?? 1 } }}
+        value={Number(value) || 0}
+        onChange={onChange}
+        min={config.min}
+        max={config.max}
+        step={config.step}
         helperText={config.helperText}
       />
     );
@@ -108,7 +145,7 @@ export function PropertyField({ config, value, onChange, variables }: PropertyFi
             fullWidth
             value={String(value ?? '')}
             onChange={(e) => onChange(e.target.value)}
-            aria-label={`${config.label} hex value`}
+            slotProps={{ htmlInput: { 'aria-label': `${config.label} hex value` } }}
           />
         </Stack>
       </Stack>
@@ -133,7 +170,10 @@ export function PropertyField({ config, value, onChange, variables }: PropertyFi
         input: config.supportsVariables
           ? {
               endAdornment: (
-                <InputAdornment position="end" sx={{ alignSelf: isMultiline ? 'flex-end' : 'center', mb: isMultiline ? 0.5 : 0 }}>
+                <InputAdornment
+                  position="end"
+                  sx={{ alignSelf: isMultiline ? 'flex-end' : 'center', mb: isMultiline ? 0.5 : 0 }}
+                >
                   <VariablePicker variables={variables} onInsert={insertAtCursor} />
                 </InputAdornment>
               ),

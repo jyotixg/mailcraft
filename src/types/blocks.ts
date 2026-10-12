@@ -1,5 +1,8 @@
+import type { Spacing } from '../utils/spacing';
+
 export type Alignment = 'left' | 'center' | 'right';
-export type FontWeight = 'normal' | 'bold';
+export type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+export type TextTransform = 'none' | 'uppercase' | 'lowercase' | 'capitalize';
 export type DividerStyle = 'solid' | 'dashed' | 'dotted';
 export type BlockWidth = 'auto' | 'full';
 
@@ -7,21 +10,26 @@ export interface TextBlockProps {
   content: string;
   fontSize: number;
   fontWeight: FontWeight;
+  textTransform: TextTransform;
   color: string;
   align: Alignment;
   lineHeight: number;
-  padding: number;
-  margin: number;
+  padding: Spacing;
+  margin: Spacing;
+  bgColor: string;
 }
 
 export interface HeadingBlockProps {
   text: string;
   fontSize: number;
   fontWeight: FontWeight;
+  textTransform: TextTransform;
   color: string;
   align: Alignment;
-  padding: number;
-  margin: number;
+  padding: Spacing;
+  margin: Spacing;
+  bgColor: string;
+  icon: string;
 }
 
 export interface ImageBlockProps {
@@ -30,7 +38,8 @@ export interface ImageBlockProps {
   width: number;
   align: Alignment;
   linkUrl: string;
-  padding: number;
+  padding: Spacing;
+  bgColor: string;
 }
 
 export interface ButtonBlockProps {
@@ -41,7 +50,7 @@ export interface ButtonBlockProps {
   borderRadius: number;
   align: Alignment;
   width: BlockWidth;
-  padding: number;
+  padding: Spacing;
 }
 
 export interface LinkBlockProps {
@@ -49,6 +58,7 @@ export interface LinkBlockProps {
   url: string;
   color: string;
   align: Alignment;
+  bgColor: string;
 }
 
 export interface DividerBlockProps {
@@ -56,6 +66,10 @@ export interface DividerBlockProps {
   thickness: number;
   style: DividerStyle;
   margin: number;
+  badgeIcon: string;
+  badgeText: string;
+  badgeColor: string;
+  badgePosition: Alignment;
 }
 
 export interface SpacerBlockProps {
@@ -66,7 +80,7 @@ export interface ContainerBlockProps {
   bgColor: string;
   border: string;
   borderRadius: number;
-  padding: number;
+  padding: Spacing;
   align: Alignment;
 }
 
@@ -74,8 +88,9 @@ export interface HeaderBlockProps {
   logoUrl: string;
   companyName: string;
   bgColor: string;
+  textColor: string;
   align: Alignment;
-  padding: number;
+  padding: Spacing;
   logoWidth: number;
 }
 
@@ -86,6 +101,8 @@ export interface FooterBlockProps {
   termsUrl: string;
   copyrightText: string;
   align: Alignment;
+  bgColor: string;
+  textColor: string;
 }
 
 export interface OtpBlockProps {
@@ -105,8 +122,9 @@ export interface TransactionBlockProps {
   dateVariable: string;
   statusVariable: string;
   bgColor: string;
+  textColor: string;
   border: string;
-  padding: number;
+  padding: Spacing;
 }
 
 export interface SecurityAlertBlockProps {
@@ -115,6 +133,34 @@ export interface SecurityAlertBlockProps {
   bgColor: string;
   textColor: string;
   align: Alignment;
+}
+
+export interface SocialIconsBlockProps {
+  facebookUrl: string;
+  twitterUrl: string;
+  linkedinUrl: string;
+  instagramUrl: string;
+  youtubeUrl: string;
+  iconSize: number;
+  align: Alignment;
+  padding: Spacing;
+  bgColor: string;
+}
+
+export interface ImageGroupItem {
+  id: string;
+  src: string;
+  alt: string;
+  linkUrl: string;
+}
+
+export interface ImageGroupBlockProps {
+  images: ImageGroupItem[];
+  imageHeight: number;
+  gap: number;
+  align: Alignment;
+  padding: Spacing;
+  bgColor: string;
 }
 
 export interface BlockPropsMap {
@@ -131,6 +177,8 @@ export interface BlockPropsMap {
   otp: OtpBlockProps;
   transaction: TransactionBlockProps;
   securityAlert: SecurityAlertBlockProps;
+  socialIcons: SocialIconsBlockProps;
+  imageGroup: ImageGroupBlockProps;
 }
 
 export type EmailBlockType = keyof BlockPropsMap;
