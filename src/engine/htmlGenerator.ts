@@ -110,14 +110,14 @@ function blockToHtml(block: EmailBlock): string {
       const p = block.props;
       return `<tr><td align="${p.align}" style="padding:28px;background-color:${p.bgColor};font-family:${FONT};">
         <div style="font-size:13px;font-weight:600;color:${p.textColor};opacity:0.7;margin-bottom:14px;">${escapeHtml(p.label)}</div>
-        <div style="display:inline-block;padding:14px 24px;border:1px solid #e2e4ee;border-radius:10px;background-color:#ffffff;font-size:24px;font-weight:bold;letter-spacing:6px;color:${p.textColor};box-shadow:0 2px 6px -2px rgba(16,24,40,0.16);">{{${p.otpVariable}}}</div>
-        <div style="font-size:12px;color:${p.textColor};opacity:0.6;margin-top:14px;">This code expires in {{${p.expiryVariable}}} minutes.</div>
+        <div style="display:inline-block;padding:14px 24px;border:1px solid #e2e4ee;border-radius:10px;background-color:#ffffff;font-size:24px;font-weight:bold;letter-spacing:6px;color:${p.textColor};box-shadow:0 2px 6px -2px rgba(16,24,40,0.16);">${escapeHtml(p.otpVariable)}</div>
+        <div style="font-size:12px;color:${p.textColor};opacity:0.6;margin-top:14px;">This code expires in ${escapeHtml(p.expiryVariable)} minutes.</div>
       </td></tr>`;
     }
     case 'transaction': {
       const p = block.props;
-      const row = (label: string, variable: string, first: boolean) =>
-        `<tr><td style="padding:10px 0;color:${p.textColor};opacity:0.6;font-size:14px;border-top:${first ? 'none' : '1px solid rgba(127,127,127,0.14)'};">${label}</td><td style="padding:10px 0;text-align:right;font-weight:bold;color:${p.textColor};font-size:14px;border-top:${first ? 'none' : '1px solid rgba(127,127,127,0.14)'};">{{${variable}}}</td></tr>`;
+      const row = (label: string, value: string, first: boolean) =>
+        `<tr><td style="padding:10px 0;color:${p.textColor};opacity:0.6;font-size:14px;border-top:${first ? 'none' : '1px solid rgba(127,127,127,0.14)'};">${label}</td><td style="padding:10px 0;text-align:right;font-weight:bold;color:${p.textColor};font-size:14px;border-top:${first ? 'none' : '1px solid rgba(127,127,127,0.14)'};">${escapeHtml(value)}</td></tr>`;
       return `<tr><td style="padding:16px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${p.bgColor};border:${p.border};border-radius:12px;box-shadow:0 4px 16px -6px rgba(16,24,40,0.12);"><tr><td style="padding:${spacingToCss(normalizeSpacing(p.padding))};font-family:${FONT};">
         <div style="font-size:15px;font-weight:bold;margin-bottom:14px;color:${p.textColor};">${escapeHtml(p.title)}</div>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">

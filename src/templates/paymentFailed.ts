@@ -26,13 +26,7 @@ export function createPaymentFailedTemplate(): EmailTemplateSchema {
     blocks: [
       block('header', { companyName: '{{companyName}}' }),
       block('text', { content: 'Hello {{userName}},\n\nUnfortunately, your payment could not be completed.' }),
-      block('transaction', {
-        title: 'Transaction Details',
-        amountVariable: 'amount',
-        transactionIdVariable: 'transactionId',
-        dateVariable: 'transactionDate',
-        statusVariable: 'status',
-      }),
+      block('transaction'),
       block('button', { text: 'Try Again', url: '{{retryUrl}}', bgColor: '#e03131' }),
       block('footer', {}),
     ],

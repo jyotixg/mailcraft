@@ -26,13 +26,7 @@ export function createPaymentSuccessTemplate(): EmailTemplateSchema {
     blocks: [
       block('header', { companyName: '{{companyName}}' }),
       block('text', { content: 'Hello {{userName}},\n\nYour payment was successful.' }),
-      block('transaction', {
-        title: 'Transaction Details',
-        amountVariable: 'amount',
-        transactionIdVariable: 'transactionId',
-        dateVariable: 'transactionDate',
-        statusVariable: 'status',
-      }),
+      block('transaction'),
       block('button', { text: 'View Transaction', url: '{{transactionUrl}}' }),
       block('footer', {}),
     ],

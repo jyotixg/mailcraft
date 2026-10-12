@@ -1,18 +1,18 @@
-import { replaceVariables, resolveDirectVariable } from '../../engine/variableEngine';
+import { replaceVariables } from '../../engine/variableEngine';
 import type { TransactionBlockProps } from '../../types/blocks';
 import { normalizeSpacing, spacingToCss } from '../../utils/spacing';
 import type { BlockComponentProps } from './TextBlock';
 
 export function TransactionBlock({ props, previewValues }: BlockComponentProps<TransactionBlockProps>) {
   const title = previewValues ? replaceVariables(props.title, previewValues) : props.title;
+  // Each value field works like every other text field: type a literal value directly,
+  // or type {{variableName}} yourself to tie it to a real variable.
+  const resolve = (raw: string) => (previewValues ? replaceVariables(raw, previewValues) : raw);
   const rows: [string, string][] = [
-    ['Amount', previewValues ? resolveDirectVariable(props.amountVariable, previewValues) : `{{${props.amountVariable}}}`],
-    [
-      'Transaction ID',
-      previewValues ? resolveDirectVariable(props.transactionIdVariable, previewValues) : `{{${props.transactionIdVariable}}}`,
-    ],
-    ['Date', previewValues ? resolveDirectVariable(props.dateVariable, previewValues) : `{{${props.dateVariable}}}`],
-    ['Status', previewValues ? resolveDirectVariable(props.statusVariable, previewValues) : `{{${props.statusVariable}}}`],
+    ['Amount', resolve(props.amountVariable)],
+    ['Transaction ID', resolve(props.transactionIdVariable)],
+    ['Date', resolve(props.dateVariable)],
+    ['Status', resolve(props.statusVariable)],
   ];
 
   return (

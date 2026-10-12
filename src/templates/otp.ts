@@ -24,7 +24,7 @@ export function createOtpTemplate(): EmailTemplateSchema {
     blocks: [
       block('header', { companyName: '{{companyName}}' }),
       block('text', { content: 'Hello {{userName}},\n\nYour verification code is:' }),
-      block('otp', { label: 'Your verification code', otpVariable: 'otp', expiryVariable: 'expiryMinutes' }),
+      block('otp', { label: 'Your verification code' }),
       block('securityAlert', {
         title: 'Security Alert',
         message: 'If you did not request this code, please contact support immediately.',

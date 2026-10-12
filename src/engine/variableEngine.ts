@@ -26,13 +26,6 @@ export function replaceVariables(text: string | undefined | null, values: Previe
   });
 }
 
-/** Resolves a directly-referenced variable name (used by OTP/Transaction blocks). */
-export function resolveDirectVariable(name: string | undefined | null, values: PreviewDataValues): string {
-  if (!name) return '';
-  const value = values[name];
-  return value !== undefined && value !== '' ? value : `[ ${name} ]`;
-}
-
 /** Free-text props (may contain {{token}} placeholders) per block type. */
 function getBlockTextFields(block: EmailBlock): string[] {
   switch (block.type) {
@@ -53,9 +46,15 @@ function getBlockTextFields(block: EmailBlock): string[] {
     case 'securityAlert':
       return [block.props.title, block.props.message];
     case 'otp':
-      return [block.props.label];
+      return [block.props.label, block.props.otpVariable, block.props.expiryVariable];
     case 'transaction':
-      return [block.props.title];
+      return [
+        block.props.title,
+        block.props.amountVariable,
+        block.props.transactionIdVariable,
+        block.props.dateVariable,
+        block.props.statusVariable,
+      ];
     case 'divider':
     case 'spacer':
     case 'container':
@@ -65,25 +64,8 @@ function getBlockTextFields(block: EmailBlock): string[] {
   }
 }
 
-/** Direct variable-name references (no {{}} braces) per block type. */
-function getBlockDirectVariableNames(block: EmailBlock): string[] {
-  switch (block.type) {
-    case 'otp':
-      return [block.props.otpVariable, block.props.expiryVariable].filter(Boolean);
-    case 'transaction':
-      return [
-        block.props.amountVariable,
-        block.props.transactionIdVariable,
-        block.props.dateVariable,
-        block.props.statusVariable,
-      ].filter(Boolean);
-    default:
-      return [];
-  }
-}
-
 export interface VariableUsage {
-  /** Every variable name referenced anywhere in the template (subject, tokens, direct refs). */
+  /** Every variable name referenced anywhere in the template (subject + every {{token}} in block content). */
   used: Set<string>;
 }
 
@@ -92,7 +74,6 @@ export function extractAllVariableUsages(schema: EmailTemplateSchema): VariableU
   extractVariableTokens(schema.template.subject).forEach((name) => used.add(name));
   for (const block of schema.blocks) {
     getBlockTextFields(block).forEach((text) => extractVariableTokens(text).forEach((name) => used.add(name)));
-    getBlockDirectVariableNames(block).forEach((name) => used.add(name));
   }
   return { used };
 }

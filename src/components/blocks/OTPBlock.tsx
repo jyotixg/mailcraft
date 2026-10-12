@@ -1,16 +1,23 @@
-import { replaceVariables, resolveDirectVariable } from '../../engine/variableEngine';
+import { replaceVariables } from '../../engine/variableEngine';
 import type { OtpBlockProps } from '../../types/blocks';
 import type { BlockComponentProps } from './TextBlock';
 
+/** True once a value is an actual resolved value — not a raw {{token}} or a "[ missing ]" placeholder. */
+function isConcreteValue(value: string): boolean {
+  return value.trim().length > 0 && !value.includes('{{') && !value.startsWith('[ ');
+}
+
 export function OTPBlock({ props, previewValues }: BlockComponentProps<OtpBlockProps>) {
   const label = previewValues ? replaceVariables(props.label, previewValues) : props.label;
-  const expiryToken = props.expiryVariable ? `{{${props.expiryVariable}}}` : '{{expiryMinutes}}';
-  const expiryValue = previewValues ? resolveDirectVariable(props.expiryVariable, previewValues) : expiryToken;
 
-  const otpToken = props.otpVariable ? `{{${props.otpVariable}}}` : '{{otp}}';
-  const resolvedOtp = previewValues ? resolveDirectVariable(props.otpVariable, previewValues) : null;
-  const isResolved = resolvedOtp !== null && !resolvedOtp.startsWith('[ ');
-  const digits = isResolved ? resolvedOtp!.padEnd(props.digits, '•').slice(0, props.digits).split('') : null;
+  // Both fields now work like every other text field in the app: type a literal
+  // value directly, or type {{variableName}} yourself to tie it to a real variable.
+  const otpValue = previewValues ? replaceVariables(props.otpVariable, previewValues) : props.otpVariable;
+  const expiryValue = previewValues ? replaceVariables(props.expiryVariable, previewValues) : props.expiryVariable;
+
+  const digits = isConcreteValue(otpValue)
+    ? otpValue.padEnd(props.digits, '•').slice(0, props.digits).split('')
+    : null;
 
   return (
     <div
@@ -63,11 +70,11 @@ export function OTPBlock({ props, previewValues }: BlockComponentProps<OtpBlockP
             boxShadow: '0 2px 6px -2px rgba(16, 24, 40, 0.16)',
           }}
         >
-          {otpToken}
+          {otpValue || '{{otp}}'}
         </span>
       )}
       <div style={{ fontSize: 12, color: props.textColor, opacity: 0.6, marginTop: 14 }}>
-        This code expires in {expiryValue} minutes.
+        This code expires in {expiryValue || '{{expiryMinutes}}'} minutes.
       </div>
     </div>
   );
